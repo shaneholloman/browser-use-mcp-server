@@ -79,7 +79,7 @@ jobs:
 
     permissions:
       contents: read
-      packages: write
+      # packages: write
       # attestations: write
       id-token: write
 
@@ -87,12 +87,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to registry
+        run: docker login ghcr.io -u "${{ secrets.COBROWSER_PACKAGE_USER }}" --password-stdin <<< "${{ secrets.COBROWSER_PACKAGE_TOKEN }}"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
